@@ -1,7 +1,6 @@
 /*  
     ScrollTo jQuery Plugin
     Tirien.com
-    $Rev: 1 $
     
     To initiate within markup use:
     <a href="#contact" data-scrollto>...</a>
@@ -18,7 +17,7 @@
 
 (function($) {
 
-    $.tScrollToElement = function(element, offset, duration){
+    $.tScrollToElement = function(selector, offset, duration){
         if ($('body').hasClass('scrolling')) {
             return false;
         }
@@ -34,16 +33,20 @@
         $('body').addClass('scrolling');
 
         $('html, body').animate({
-            scrollTop: $(element).offset().top + offset
+            scrollTop: $(selector).offset().top + offset
         }, duration, function(){
             $('body').removeClass('scrolling');
+
+            if (selector[0] == '#') {
+                window.location = selector;
+            }
         });
     }
 
     $(document).ready(function() {
         $.fn.reverse = [].reverse;
 
-        $("body").delegate("[data-scrollto]", "click", function(e) {
+        $("body").delegate('[data-scrollto]', 'click', function(e) {
             e.preventDefault();
 
             var where = $(this).data('scrollto') || $(this).attr('href');
